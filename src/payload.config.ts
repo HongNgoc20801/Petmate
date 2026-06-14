@@ -30,7 +30,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Customers, Omplassering,PetTypes, Breeds,Dyremat, MatTypes,TilbehorTypes,Tilbehor, DeliveryCompanies,Stores,Pets, Orders],
+  collections: [Users, Media, Customers, Omplassering, PetTypes, Breeds, Dyremat, MatTypes, TilbehorTypes, Tilbehor, DeliveryCompanies, Stores, Pets, Orders],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -40,6 +40,8 @@ export default buildConfig({
     client: {
       url: process.env.DATABASE_URL || '',
     },
+    // THAY ĐỔI TẠI ĐÂY: Ép Payload v3 tự động vẽ cấu trúc bảng vào file SQLite khi Server khởi động
+    push: true, 
   }),
   sharp,
   plugins: [],
