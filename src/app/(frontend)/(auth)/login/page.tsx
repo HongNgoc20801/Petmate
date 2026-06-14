@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import styles from "./login.module.css";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
@@ -49,10 +49,10 @@ export default function LoginPage() {
         return;
       }
 
-        window.dispatchEvent(new Event("petmate-auth-updated"));
+      window.dispatchEvent(new Event("petmate-auth-updated"));
 
-        router.push("/");
-        router.refresh();
+      router.push("/");
+      router.refresh();
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -121,7 +121,11 @@ export default function LoginPage() {
 
             {error && <p className={styles.error}>{error}</p>}
 
-            <button type="submit" className={styles.submitButton} disabled={loading}>
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={loading}
+            >
               {loading ? "Logging in..." : "Login now"}
             </button>
 
@@ -132,5 +136,19 @@ export default function LoginPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className={styles.loginPage}>
+          <p>Loading login...</p>
+        </main>
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }
