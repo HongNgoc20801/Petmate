@@ -43,5 +43,5 @@ COPY --from=builder /app/.next/static ./.next/static
 EXPOSE 3000
 ENV PORT 3000
 
-# Chạy ứng dụng với quyền cao nhất để đồng bộ mượt mà với Volume của Railway
-CMD HOSTNAME="0.0.0.0" node server.js
+# THAY ĐỔI TẠI ĐÂY: Chạy lệnh tự động tạo bảng SQLite trước khi khởi động máy chủ Next.js
+CMD npx payload migrate:push && HOSTNAME="0.0.0.0" node server.js
