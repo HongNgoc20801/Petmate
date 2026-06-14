@@ -3,7 +3,7 @@ FROM node:22.17.0-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 
-# Cài đặt dependencies (Đã sửa từ npm ci thành npm install để bỏ qua lỗi lệch lockfile)
+# Cài đặt dependencies (Sử dụng npm install để bỏ qua lỗi lệch lockfile)
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -30,26 +30,18 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
+# Copy các thư mục tĩnh cần thiết từ bước build
 COPY --from=builder /app/public ./public
 
-# Cấu hình cache hệ thống Next.js
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# Tạo thư mục dữ liệu SQLite và media, phân quyền cho user nextjs
-RUN mkdir -p /app/data /app/media
-RUN chown -R nextjs:nodejs /app/data /app/media
+# Tạo sẵn thư mục cache và thư mục chứa SQLite
+RUN mkdir -p .next /app/data /app/media
 
 # Copy thư mục build dạng standalone gọn nhẹ
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 3000
 ENV PORT 3000
 
+# Chạy ứng dụng với quyền cao nhất để đồng bộ mượt mà với Volume của Railway
 CMD HOSTNAME="0.0.0.0" node server.js
