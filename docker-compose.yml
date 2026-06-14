@@ -1,43 +1,18 @@
-version: '3'
+version: '3.8'
 
 services:
-  payload:
-    image: node:20-alpine
+  payload-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: petmate_payload_app
     ports:
       - '3000:3000'
     volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
-    depends_on:
-      - mongo
-      # - postgres
+      # Gắn thư mục chứa file SQLite cũ của bạn vào Docker
+      - ./docker_db:/app/data
+      # (Tùy chọn) Gắn thư mục media nếu bạn muốn lưu ảnh ở máy host không bị mất
+      - ./media:/app/media
     env_file:
       - .env
-
-  # Ensure your DATABASE_URL uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
-  mongo:
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
-    volumes:
-      - data:/data/db
-    logging:
-      driver: none
-
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
-
-volumes:
-  data:
-  # pgdata:
-  node_modules:
+    restart: always

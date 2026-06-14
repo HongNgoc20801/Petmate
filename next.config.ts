@@ -7,6 +7,9 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  // Kích hoạt tính năng build Standalone để chạy mượt mà trên Docker
+  output: 'standalone', 
+  
   images: {
     localPatterns: [
       {

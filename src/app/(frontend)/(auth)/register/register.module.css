@@ -1,0 +1,227 @@
+.registerPage {
+  min-height: calc(100vh - 86px);
+  background-color: #fffaf3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 64px;
+}
+
+.registerCard {
+  width: 100%;
+  max-width: 1180px;
+  background-color: white;
+  border: 1px solid #f0dfc8;
+  border-radius: 34px;
+  padding: 28px 56px;
+  box-shadow: 0 24px 70px rgba(47, 42, 37, 0.08);
+
+  display: grid;
+  grid-template-columns: 0.9fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* LEFT DESCRIPTION */
+
+.introSide {
+  max-width: 460px;
+}
+
+.smallTitle {
+  color: #e6933a;
+  font-size: 15px;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.introSide h1 {
+  color: #1f2937;
+  font-size: 52px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: 20px;
+}
+
+.description {
+  color: #6b5f55;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+/* RIGHT FORM */
+
+.formSide {
+  width: 100%;
+  padding-top:0;
+  padding-bottom:0;
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.formHeader h2 {
+  color: #1f2937;
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.formHeader p {
+  color: #6b5f55;
+  font-size: 14px;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fieldGroup label {
+  color: #111827;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.fieldGroup input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #ead8c3;
+  border-radius: 14px;
+  padding: 0 15px;
+  font-size: 14px;
+  color: #1f2937;
+  background-color: white;
+  outline: none;
+}
+
+.fieldGroup input:focus {
+  border-color: #f28c28;
+  box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.12);
+}
+
+.checkBoxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b5f55;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.checkBoxRow input {
+  width: 16px;
+  height: 16px;
+  accent-color: #f28c28;
+}
+
+.error {
+  background-color: #fff1f1;
+  color: #c2410c;
+  border: 1px solid #ffd0c7;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.submitButton {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 999px;
+  background-color: #f28c28;
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(242, 140, 40, 0.22);
+  transition: 0.2s ease;
+  margin-top: 4px;
+}
+
+.submitButton:hover {
+  background-color: #d97616;
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loginText {
+  text-align: center;
+  color: #6b5f55;
+  font-size: 13px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.loginText a {
+  color: #e6933a;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.loginText a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+  .registerPage {
+    padding: 36px 24px;
+  }
+
+  .registerCard {
+    grid-template-columns: 1fr;
+    padding: 38px;
+    gap: 38px;
+  }
+
+  .introSide {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .introSide h1 {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 640px) {
+  .registerCard {
+    padding: 28px 22px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .introSide h1 {
+    font-size: 36px;
+  }
+
+  .formHeader h2 {
+    font-size: 28px;
+  }
+}

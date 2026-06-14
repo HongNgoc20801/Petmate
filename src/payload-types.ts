@@ -64,11 +64,24 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    customers: CustomerAuthOperations;
   };
   blocks: {};
   collections: {
     users: User;
     media: Media;
+    customers: Customer;
+    omplassering: Omplassering;
+    'pet-types': PetType;
+    breeds: Breed;
+    dyremat: Dyremat;
+    'mat-types': MatType;
+    'tilbehor-types': TilbehorType;
+    tilbehor: Tilbehor;
+    'delivery-companies': DeliveryCompany;
+    stores: Store;
+    pets: Pet;
+    orders: Order;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,13 +91,25 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    customers: CustomersSelect<false> | CustomersSelect<true>;
+    omplassering: OmplasseringSelect<false> | OmplasseringSelect<true>;
+    'pet-types': PetTypesSelect<false> | PetTypesSelect<true>;
+    breeds: BreedsSelect<false> | BreedsSelect<true>;
+    dyremat: DyrematSelect<false> | DyrematSelect<true>;
+    'mat-types': MatTypesSelect<false> | MatTypesSelect<true>;
+    'tilbehor-types': TilbehorTypesSelect<false> | TilbehorTypesSelect<true>;
+    tilbehor: TilbehorSelect<false> | TilbehorSelect<true>;
+    'delivery-companies': DeliveryCompaniesSelect<false> | DeliveryCompaniesSelect<true>;
+    stores: StoresSelect<false> | StoresSelect<true>;
+    pets: PetsSelect<false> | PetsSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
   globals: {};
@@ -93,7 +118,7 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User;
+  user: User | Customer;
   jobs: {
     tasks: unknown;
     workflows: unknown;
@@ -117,12 +142,30 @@ export interface UserAuthOperations {
     password: string;
   };
 }
+export interface CustomerAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -147,7 +190,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -163,10 +206,312 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers".
+ */
+export interface Customer {
+  id: number;
+  firstName: string;
+  lastName: string;
+  phone?: string | null;
+  address?: string | null;
+  gender?: ('female' | 'male' | 'other') | null;
+  /**
+   * Profile image for the customer.
+   */
+  avatar?: (number | null) | Media;
+  role: 'customer' | 'admin';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'customers';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "omplassering".
+ */
+export interface Omplassering {
+  id: number;
+  name: string;
+  petType: number | PetType;
+  breed?: (number | null) | Breed;
+  age: number;
+  ageUnit: 'months' | 'years';
+  gender: 'male' | 'female';
+  personality?: string | null;
+  description?: string | null;
+  status: 'available' | 'adopted';
+  image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pet-types".
+ */
+export interface PetType {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "breeds".
+ */
+export interface Breed {
+  id: number;
+  name: string;
+  petType: number | PetType;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dyremat".
+ */
+export interface Dyremat {
+  id: number;
+  name: string;
+  petType: number | PetType;
+  matType: number | MatType;
+  brand?: string | null;
+  sizes: {
+    weightValue: number;
+    weightUnit: 'kg' | 'g';
+    /**
+     * The price the seller paid for this size. Tick the checkbox below if this price already includes 25% VAT.
+     */
+    purchasePrice: number;
+    /**
+     * Tick this if the purchase price already includes VAT. The system will remove VAT before calculating profit and final customer price.
+     */
+    purchasePriceIncludesTax?: boolean | null;
+    /**
+     * Calculated automatically. If purchase price includes VAT, the system removes VAT first.
+     */
+    costPriceBeforeTax?: number | null;
+    /**
+     * The profit percentage the seller wants to add for this size before calculating the final customer price.
+     */
+    profitPercent?: number | null;
+    /**
+     * Calculated automatically from cost price before VAT and profit percent.
+     */
+    priceBeforeTax?: number | null;
+    /**
+     * Final customer price including VAT and profit. This is the price shown to customers.
+     */
+    price?: number | null;
+    discountPercent?: number | null;
+    /**
+     * This price is calculated automatically from customer price including VAT and discount percent for this size.
+     */
+    salePrice?: number | null;
+    id?: string | null;
+  }[];
+  price?: number | null;
+  weightValue?: number | null;
+  weightUnit?: ('kg' | 'g') | null;
+  countryOfOrigin?: string | null;
+  ingredients?: string | null;
+  description?: string | null;
+  feedingGuide?:
+    | {
+        weightFrom: number;
+        weightTo: number;
+        amount: string;
+        id?: string | null;
+      }[]
+    | null;
+  status: 'available' | 'sold-out';
+  image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mat-types".
+ */
+export interface MatType {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tilbehor-types".
+ */
+export interface TilbehorType {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tilbehor".
+ */
+export interface Tilbehor {
+  id: number;
+  name: string;
+  petType: (number | PetType)[];
+  tilbehorType: number | TilbehorType;
+  brand?: string | null;
+  /**
+   * The price the seller paid for this product. Tick the checkbox below if this price already includes 25% VAT.
+   */
+  purchasePrice: number;
+  /**
+   * Tick this if the purchase price already includes VAT. The system will remove VAT before calculating profit and final customer price.
+   */
+  purchasePriceIncludesTax?: boolean | null;
+  /**
+   * Calculated automatically. If purchase price includes VAT, the system removes VAT first.
+   */
+  costPriceBeforeTax?: number | null;
+  /**
+   * The profit percentage the seller wants to add before calculating the final customer price.
+   */
+  profitPercent?: number | null;
+  /**
+   * Calculated automatically from cost price before VAT and profit percent.
+   */
+  priceBeforeTax?: number | null;
+  /**
+   * Final customer price including VAT and profit. This is the price shown to customers.
+   */
+  price?: number | null;
+  discountPercent?: number | null;
+  /**
+   * Calculated automatically from customer price including VAT and discount percent.
+   */
+  salePrice?: number | null;
+  material?: string | null;
+  color?: string | null;
+  description?: string | null;
+  status: 'available' | 'sold-out';
+  image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery-companies".
+ */
+export interface DeliveryCompany {
+  id: number;
+  name: string;
+  description?: string | null;
+  price: number;
+  /**
+   * Example: 1-3 business days
+   */
+  deliveryTime?: string | null;
+  logo?: (number | null) | Media;
+  status: 'active' | 'inactive';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stores".
+ */
+export interface Store {
+  id: number;
+  name: string;
+  address: string;
+  postalCode: string;
+  city: string;
+  phone?: string | null;
+  openingHours?: string | null;
+  /**
+   * Example: 1.2 km away. You can write this manually for now.
+   */
+  distanceText?: string | null;
+  status: 'active' | 'inactive';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pets".
+ */
+export interface Pet {
+  id: number;
+  owner: number | Customer;
+  name: string;
+  petType: 'dog' | 'cat' | 'smallAnimal';
+  breed?: string | null;
+  image?: (number | null) | Media;
+  gender?: ('male' | 'female') | null;
+  sterilized?: ('notSterilized' | 'sterilized') | null;
+  origin?: ('breeder' | 'adopted') | null;
+  birthDate?: string | null;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  orderNumber: string;
+  customer?: (number | null) | Customer;
+  customerEmail?: string | null;
+  customerName?: string | null;
+  status: 'new' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  items: {
+    productName: string;
+    productType: 'dyremat' | 'tilbehor';
+    productId?: string | null;
+    imageUrl?: string | null;
+    quantity: number;
+    price: number;
+    originalPrice?: number | null;
+    lineTotal: number;
+    id?: string | null;
+  }[];
+  subtotal: number;
+  shipping: number;
+  discount?: number | null;
+  total: number;
+  currency: string;
+  deliveryAddress?: {
+    fullName?: string | null;
+    phone?: string | null;
+    address?: string | null;
+    postalCode?: string | null;
+    city?: string | null;
+  };
+  note?: string | null;
+  createdFrom?: ('website' | 'admin') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,21 +528,74 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'customers';
+        value: number | Customer;
+      } | null)
+    | ({
+        relationTo: 'omplassering';
+        value: number | Omplassering;
+      } | null)
+    | ({
+        relationTo: 'pet-types';
+        value: number | PetType;
+      } | null)
+    | ({
+        relationTo: 'breeds';
+        value: number | Breed;
+      } | null)
+    | ({
+        relationTo: 'dyremat';
+        value: number | Dyremat;
+      } | null)
+    | ({
+        relationTo: 'mat-types';
+        value: number | MatType;
+      } | null)
+    | ({
+        relationTo: 'tilbehor-types';
+        value: number | TilbehorType;
+      } | null)
+    | ({
+        relationTo: 'tilbehor';
+        value: number | Tilbehor;
+      } | null)
+    | ({
+        relationTo: 'delivery-companies';
+        value: number | DeliveryCompany;
+      } | null)
+    | ({
+        relationTo: 'stores';
+        value: number | Store;
+      } | null)
+    | ({
+        relationTo: 'pets';
+        value: number | Pet;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: string | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'customers';
+        value: number | Customer;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -206,11 +604,16 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
-  user: {
-    relationTo: 'users';
-    value: string | User;
-  };
+  id: number;
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'customers';
+        value: number | Customer;
+      };
   key?: string | null;
   value?:
     | {
@@ -229,7 +632,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -274,6 +677,249 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers_select".
+ */
+export interface CustomersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  phone?: T;
+  address?: T;
+  gender?: T;
+  avatar?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "omplassering_select".
+ */
+export interface OmplasseringSelect<T extends boolean = true> {
+  name?: T;
+  petType?: T;
+  breed?: T;
+  age?: T;
+  ageUnit?: T;
+  gender?: T;
+  personality?: T;
+  description?: T;
+  status?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pet-types_select".
+ */
+export interface PetTypesSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "breeds_select".
+ */
+export interface BreedsSelect<T extends boolean = true> {
+  name?: T;
+  petType?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dyremat_select".
+ */
+export interface DyrematSelect<T extends boolean = true> {
+  name?: T;
+  petType?: T;
+  matType?: T;
+  brand?: T;
+  sizes?:
+    | T
+    | {
+        weightValue?: T;
+        weightUnit?: T;
+        purchasePrice?: T;
+        purchasePriceIncludesTax?: T;
+        costPriceBeforeTax?: T;
+        profitPercent?: T;
+        priceBeforeTax?: T;
+        price?: T;
+        discountPercent?: T;
+        salePrice?: T;
+        id?: T;
+      };
+  price?: T;
+  weightValue?: T;
+  weightUnit?: T;
+  countryOfOrigin?: T;
+  ingredients?: T;
+  description?: T;
+  feedingGuide?:
+    | T
+    | {
+        weightFrom?: T;
+        weightTo?: T;
+        amount?: T;
+        id?: T;
+      };
+  status?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mat-types_select".
+ */
+export interface MatTypesSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tilbehor-types_select".
+ */
+export interface TilbehorTypesSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tilbehor_select".
+ */
+export interface TilbehorSelect<T extends boolean = true> {
+  name?: T;
+  petType?: T;
+  tilbehorType?: T;
+  brand?: T;
+  purchasePrice?: T;
+  purchasePriceIncludesTax?: T;
+  costPriceBeforeTax?: T;
+  profitPercent?: T;
+  priceBeforeTax?: T;
+  price?: T;
+  discountPercent?: T;
+  salePrice?: T;
+  material?: T;
+  color?: T;
+  description?: T;
+  status?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "delivery-companies_select".
+ */
+export interface DeliveryCompaniesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  price?: T;
+  deliveryTime?: T;
+  logo?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stores_select".
+ */
+export interface StoresSelect<T extends boolean = true> {
+  name?: T;
+  address?: T;
+  postalCode?: T;
+  city?: T;
+  phone?: T;
+  openingHours?: T;
+  distanceText?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pets_select".
+ */
+export interface PetsSelect<T extends boolean = true> {
+  owner?: T;
+  name?: T;
+  petType?: T;
+  breed?: T;
+  image?: T;
+  gender?: T;
+  sterilized?: T;
+  origin?: T;
+  birthDate?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  customer?: T;
+  customerEmail?: T;
+  customerName?: T;
+  status?: T;
+  paymentStatus?: T;
+  items?:
+    | T
+    | {
+        productName?: T;
+        productType?: T;
+        productId?: T;
+        imageUrl?: T;
+        quantity?: T;
+        price?: T;
+        originalPrice?: T;
+        lineTotal?: T;
+        id?: T;
+      };
+  subtotal?: T;
+  shipping?: T;
+  discount?: T;
+  total?: T;
+  currency?: T;
+  deliveryAddress?:
+    | T
+    | {
+        fullName?: T;
+        phone?: T;
+        address?: T;
+        postalCode?: T;
+        city?: T;
+      };
+  note?: T;
+  createdFrom?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

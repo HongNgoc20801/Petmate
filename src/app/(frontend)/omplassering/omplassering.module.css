@@ -1,0 +1,531 @@
+.omplasseringPage {
+  min-height: calc(100vh - 86px);
+  background-color: #fffaf3;
+  padding:28px 64px 48px;
+}
+
+.header {
+  max-width: 720px;
+  margin: 0 0 22px 0;
+  padding:0;
+}
+
+.smallTitle {
+  color: #e6933a;
+  font-size: 16px;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+}
+
+.header h1 {
+  color: #1f2937;
+  font-size: 44px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin: 0 0 10px 0;
+}
+
+.header p {
+  color: #6b5f55;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+.filterBar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.filterButton {
+  border: 1px solid #f0dfc8;
+  background-color: white;
+  color: #5f5750;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.filterButton:hover {
+  border-color: #f28c28;
+  color: #f28c28;
+}
+
+.filterButtonActive {
+  background-color: #f28c28;
+  border-color: #f28c28;
+  color: white;
+}
+
+.filterButtonActive:hover {
+  color: white;
+  background-color: #d97616;
+}
+.message {
+  color: #6b5f55;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.error {
+  max-width: 520px;
+  background-color: #fff1f1;
+  color: #c2410c;
+  border: 1px solid #ffd0c7;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.emptyBox {
+    max-width: 520px;
+    background-color: white;
+    border: 1px solid #f0dfc8;
+    border-radius: 26px;
+    padding: 30px;
+    box-shadow: 0 18px 50px rgba(47, 42, 37, 0.06);
+}
+
+.emptyBox h2 {
+    color: #1f2937;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.emptyBox p {
+    color: #6b5f55;
+    font-size: 16px;
+}
+
+.omplasseringGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+}
+
+.omplasseringCard {
+    background-color: white;
+    border: 1px solid #f0dfc8;
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 18px 50px rgba(47, 42, 37, 0.06);
+    transition: 0.2s ease;
+}
+
+.omplasseringCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 60px rgba(47, 42, 37, 0.1);
+}
+
+.omplasseringImageWrapper {
+    width: 100%;
+    height: 210px;
+    border-radius: 22px;
+    overflow: hidden;
+    background-color: #fff3d8;
+    margin-bottom: 22px;
+}
+
+.omplasseringImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.omplasseringPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+}
+
+.omplasseringCard h2 {
+    color: #1f2937;
+    font-size: 28px;
+    font-weight: 900;
+    margin: 0 0 16px 0;
+}
+
+.omplasseringInfo {
+    color: #e6933a;
+    font-size: 15px;
+    font-weight: 900;
+    text-transform: capitalize;
+    margin: 0 0 22px 0;
+}
+
+.personality {
+    color: #2f2a25;
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+}
+
+.description {
+    color: #6b5f55;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 22px 0;
+}
+
+.status {
+  display: inline-block;
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+.cardActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 8px;
+}
+.breedFilterBox {
+  margin-top: 18px;
+}
+
+.breedFilterTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.backButton {
+  border: 1px solid #f0dfc8;
+  background-color: white;
+  color: #5f5750;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 8px 20px rgba(47, 42, 37, 0.05);
+}
+
+.backButton:hover {
+  border-color: #f28c28;
+  color: #f28c28;
+  transform: translateY(-1px);
+}
+
+
+.bookButton {
+  border: none;
+  background-color: #f28c28;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bookButton:hover {
+  background-color: #d97616;
+}
+
+.bookButtonDisabled {
+  border: none;
+  background-color: #e5e7eb;
+  color: #6b7280;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: not-allowed;
+}
+.visitOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(31, 41, 55, 0.45);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.visitModal {
+  width: 100%;
+  max-width: 880px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 30px;
+  padding: 34px;
+  position: relative;
+  box-shadow: 0 30px 90px rgba(31, 41, 55, 0.3);
+}
+
+.visitCloseButton {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background-color: #fff3d8;
+  color: #1f2937;
+  font-size: 26px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.visitCloseButton:hover {
+  background-color: #f28c28;
+  color: white;
+}
+
+.visitHeader {
+  margin-bottom: 24px;
+}
+
+.visitHeader h2 {
+  color: #1f2937;
+  font-size: 38px;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+}
+
+.visitHeader p {
+  color: #6b5f55;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.visitMessage {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #bbf7d0;
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
+.visitForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formSection {
+  border-top: 1px solid #f0dfc8;
+  padding-top: 20px;
+}
+
+.formSection h3 {
+  color: #1f2937;
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0 0 16px 0;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.formGrid label,
+.questionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.formGrid input,
+.questionGroup textarea {
+  width: 100%;
+  border: 1px solid #f0dfc8;
+  background-color: #fffaf3;
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #1f2937;
+  font-size: 15px;
+  outline: none;
+}
+
+.formGrid input:focus,
+.questionGroup textarea:focus {
+  border-color: #f28c28;
+}
+
+.questionGroup {
+  margin-bottom: 16px;
+}
+
+.confirmBox {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #fffaf3;
+  border: 1px solid #f0dfc8;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.confirmBox label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #5f5750;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.confirmBox input {
+  margin-top: 3px;
+  accent-color: #f28c28;
+}
+
+.submitVisitButton {
+  border: none;
+  background-color: #f28c28;
+  color: white;
+  padding: 15px 24px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.submitVisitButton:hover {
+  background-color: #d97616;
+}
+.questionGroup p {
+  margin: 0;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.radioRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.radioOption {
+  min-width: 110px;
+  border: 1px solid #f0dfc8;
+  background-color: #fffaf3;
+  border-radius: 999px;
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.radioOption:hover {
+  border-color: #f28c28;
+  color: #f28c28;
+}
+
+.radioOption input {
+  width: 16px;
+  height: 16px;
+  accent-color: #f28c28;
+  cursor: pointer;
+}
+.visitSuccessBox {
+  background-color: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  border-radius: 24px;
+  padding: 30px;
+  text-align: center;
+}
+
+.visitSuccessIcon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.visitSuccessBox h3 {
+  color: #1f2937;
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+}
+
+.visitSuccessBox p {
+  color: #5f5750;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 22px 0;
+}
+
+@media (max-width: 1050px) {
+  .omplasseringGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 800px) {
+  .visitModal {
+    padding: 24px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .visitHeader h2 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 700px) {
+  .omplasseringPage {
+    padding: 42px 24px;
+  }
+
+  .header h1 {
+    font-size: 38px;
+  }
+
+  .omplasseringGrid {
+    grid-template-columns: 1fr;
+  }
+}

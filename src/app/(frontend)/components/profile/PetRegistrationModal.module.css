@@ -1,0 +1,193 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(31, 41, 55, 0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  width: min(720px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #f0dfc8;
+  border-radius: 30px;
+  padding: 28px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.header p {
+  color: #e6933a;
+  font-size: 14px;
+  font-weight: 900;
+  margin: 0 0 4px;
+}
+
+.header h2 {
+  color: #1f2937;
+  font-size: 30px;
+  font-weight: 950;
+  margin: 0;
+}
+
+.closeButton {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #f0dfc8;
+  background-color: #fffaf3;
+  color: #1f2937;
+  border-radius: 50%;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.choiceGroup {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.choiceGroup button {
+  border: 1px solid #f0dfc8;
+  background-color: #fffaf3;
+  color: #5f5750;
+  border-radius: 999px;
+  padding: 11px 18px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.choiceGroup button:hover,
+.activeChoice {
+  background-color: #f28c28 !important;
+  border-color: #f28c28 !important;
+  color: white !important;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid #f0dfc8;
+  background-color: #fffaf3;
+  color: #1f2937;
+  padding: 13px 15px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  outline: none;
+  font-family: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: #f28c28;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.12);
+}
+
+.error {
+  background-color: #fff1f1;
+  color: #c2410c;
+  border: 1px solid #ffd0c7;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.cancelButton,
+.saveButton {
+  border-radius: 999px;
+  padding: 13px 22px;
+  font-size: 15px;
+  font-weight: 950;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cancelButton {
+  border: 1px solid #f0dfc8;
+  background-color: white;
+  color: #5f5750;
+}
+
+.saveButton {
+  border: 0;
+  background-color: #f28c28;
+  color: white;
+  box-shadow: 0 12px 24px rgba(242, 140, 40, 0.22);
+}
+
+.saveButton:hover {
+  background-color: #d97616;
+}
+
+.saveButton:disabled {
+  background-color: #d1d5db;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .modal {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .header h2 {
+    font-size: 26px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+  }
+}

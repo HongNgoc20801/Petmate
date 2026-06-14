@@ -1,19 +1,23 @@
-import React from 'react'
-import './styles.css'
+import type { Metadata } from "next";
+import "./styles.css";
+import Navbar from "./components/Navigation/Navigation";
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
-}
+export const metadata: Metadata = {
+  title: "PetMate - Your Ultimate Pet Companion",
+  description: "Find your new best friend",
+};
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
-        <main>{children}</main>
+        <Navbar />
+        {children}
       </body>
     </html>
-  )
+  );
 }

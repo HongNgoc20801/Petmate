@@ -1,0 +1,660 @@
+.tilbudPage {
+  min-height: calc(100vh - 86px);
+  background-color: #fffaf3;
+  padding: 24px 64px 56px;
+}
+
+.header {
+  max-width: 860px;
+  margin-bottom: 28px;
+}
+
+.smallTitle {
+  color: #e6933a;
+  font-size: 15px;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+}
+
+.header h1 {
+  color: #1f2937;
+  font-size: 48px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin: 0 0 12px 0;
+}
+
+.header p {
+  color: #6b5f55;
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* FILTER */
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.filterButton {
+  border: 1px solid #f0dfc8;
+  background-color: white;
+  color: #5f5750;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.filterButton:hover {
+  border-color: #f28c28;
+  color: #f28c28;
+}
+
+.filterButtonActive {
+  background-color: #f28c28;
+  border-color: #f28c28;
+  color: white;
+}
+
+.filterButtonActive:hover {
+  background-color: #d97616;
+  color: white;
+}
+
+/* MESSAGE / ERROR / EMPTY */
+
+.message {
+  color: #6b5f55;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.cartMessage {
+  display: inline-block;
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 900;
+  margin: 0 0 22px 0;
+}
+
+.error {
+  max-width: 520px;
+  background-color: #fff1f1;
+  color: #c2410c;
+  border: 1px solid #ffd0c7;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.emptyBox {
+  max-width: 560px;
+  background-color: white;
+  border: 1px solid #f0dfc8;
+  border-radius: 26px;
+  padding: 30px;
+  box-shadow: 0 18px 50px rgba(47, 42, 37, 0.06);
+}
+
+.emptyBox h2 {
+  color: #1f2937;
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+}
+
+.emptyBox p {
+  color: #6b5f55;
+  font-size: 16px;
+}
+
+/* OFFER GRID - same card style as Dyremat/Tilbehør */
+
+.offerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 400px));
+  gap: 26px;
+  justify-content: start;
+}
+
+.offerCard {
+  background-color: white;
+  border: 1px solid #f0dfc8;
+  border-radius: 28px;
+  padding: 20px;
+  box-shadow: 0 18px 50px rgba(47, 42, 37, 0.06);
+  transition: 0.2s ease;
+}
+
+.offerCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 24px 60px rgba(47, 42, 37, 0.1);
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 300px;
+  border-radius: 22px;
+  overflow: hidden;
+  background-color: #ffffff;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.discountBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background-color: #dc2626;
+  color: white;
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-size: 13px;
+  font-weight: 900;
+  z-index: 2;
+}
+
+.offerCard h2 {
+  color: #1f2937;
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+}
+
+.productMeta {
+  color: #e6933a;
+  font-size: 15px;
+  font-weight: 900;
+  margin: 0 0 14px 0;
+  text-transform: capitalize;
+}
+
+.description {
+  color: #6b5f55;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 18px 0;
+}
+
+/* DYREMAT SIZE BUTTONS ON CARD */
+
+.cardSizeOptions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 18px 0;
+}
+
+.cardSizeButton {
+  border: 1px solid #f0dfc8;
+  background-color: white;
+  color: #5f5750;
+  padding: 9px 15px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cardSizeButton:hover {
+  border-color: #f28c28;
+  color: #f28c28;
+}
+
+.cardSizeButtonActive {
+  border-color: #f28c28;
+  color: #e6933a;
+  background-color: #fff7ed;
+}
+
+/* PRICE + CARD BUTTONS */
+
+.cardBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.priceBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.price {
+  color: #1f2937;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.salePrice {
+  color: #dc2626;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.oldPrice {
+  color: #9ca3af;
+  font-size: 16px;
+  font-weight: 800;
+  text-decoration: line-through;
+}
+
+.cardButtons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detailButton {
+  border: none;
+  background-color: #f28c28;
+  color: white;
+  padding: 12px 17px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.detailButton:hover {
+  background-color: #d97616;
+}
+
+.cartButton {
+  border: none;
+  background-color: #1f2937;
+  color: white;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 19px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cartButton:hover {
+  background-color: #111827;
+  transform: translateY(-1px);
+}
+
+.cartButton:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  width: auto;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+/* DETAIL MODAL */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(31, 41, 55, 0.45);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.detailModal {
+  width: 100%;
+  max-width: 980px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 30px;
+  padding: 28px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 30px;
+  align-items: start;
+  box-shadow: 0 30px 90px rgba(31, 41, 55, 0.3);
+}
+
+.closeButton {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background-color: #fff3d8;
+  color: #1f2937;
+  font-size: 26px;
+  font-weight: 900;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.closeButton:hover {
+  background-color: #f28c28;
+  color: white;
+}
+
+.detailImageWrapper {
+  width: 100%;
+  height: 360px;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: #ffffff;
+  position: sticky;
+  top: 120px;
+  align-self: start;
+  margin-top: 40px;
+}
+
+.detailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.detailContent h2 {
+  color: #1f2937;
+  font-size: 36px;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+}
+
+.detailPriceBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px 0;
+  flex-wrap: wrap;
+}
+
+.detailPrice {
+  color: #e6933a;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.detailSalePrice {
+  color: #dc2626;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.detailOldPrice {
+  color: #9ca3af;
+  font-size: 18px;
+  font-weight: 800;
+  text-decoration: line-through;
+}
+
+/* DYREMAT SIZE BUTTONS IN DETAIL */
+
+.sizeSection {
+  margin-bottom: 24px;
+}
+
+.sizeSection h3 {
+  color: #1f2937;
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0 0 12px 0;
+}
+
+.sizeOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sizeButton {
+  border: 1px solid #f0dfc8;
+  background-color: white;
+  color: #1f2937;
+  border-radius: 18px;
+  padding: 12px 14px;
+  min-width: 120px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-align: left;
+}
+
+.sizeButton:hover {
+  border-color: #f28c28;
+  transform: translateY(-1px);
+}
+
+.sizeButtonActive {
+  border-color: #f28c28;
+  background-color: #fff7ed;
+}
+
+.sizeButton span {
+  display: block;
+  color: #5f5750;
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.sizeButton strong {
+  display: block;
+}
+
+.sizeSalePrice {
+  display: block;
+  color: #dc2626;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.sizeOldPrice {
+  display: block;
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: line-through;
+}
+
+/* DETAIL INFO GRID */
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.detailGrid div {
+  background-color: #fffaf3;
+  border: 1px solid #f0dfc8;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.detailGrid span {
+  display: block;
+  color: #6b5f55;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.detailGrid strong {
+  color: #1f2937;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.detailSection {
+  margin-top: 22px;
+}
+
+.detailSection h3 {
+  color: #1f2937;
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+}
+
+.detailSection p {
+  color: #6b5f55;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.detailCartButton {
+  margin-top: 24px;
+  border: none;
+  background-color: #f28c28;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.detailCartButton:hover {
+  background-color: #d97616;
+}
+
+.detailCartButton:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* DYREMAT FEEDING TABLE */
+
+.feedingTable {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.feedingTable thead {
+  background-color: #263f69;
+  color: white;
+}
+
+.feedingTable th {
+  text-align: left;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.feedingTable td {
+  border-bottom: 1px solid #f0dfc8;
+  padding: 16px;
+  color: #1f2937;
+  font-size: 15px;
+}
+
+.feedingTable tr:last-child td {
+  border-bottom: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1050px) {
+  .offerGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .detailModal {
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+
+  .detailImageWrapper {
+    height: 260px;
+    position: static;
+    margin-top: 0;
+  }
+
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailContent h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 700px) {
+  .tilbudPage {
+    padding: 24px 22px 48px;
+  }
+
+  .header h1 {
+    font-size: 38px;
+  }
+
+  .offerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filterBar {
+    gap: 8px;
+  }
+
+  .filterButton {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+
+  .cardBottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cardButtons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .detailButton {
+    flex: 1;
+  }
+}

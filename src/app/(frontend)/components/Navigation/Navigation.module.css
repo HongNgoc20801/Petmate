@@ -1,0 +1,273 @@
+.navbar {
+  width: 100%;
+  height: 86px;
+  padding: 0 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fffaf3;
+  border-bottom: 1px solid #f0dfc8;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logoImage {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.logoText {
+  font-size: 34px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -1px;
+}
+
+.logoPet {
+  color: #e6933a;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+}
+
+.navLink {
+  color: #5f5750;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.navLink:hover {
+  color: #f28c28;
+}
+
+.active {
+  color: #f28c28;
+}
+
+.authActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.loginButton {
+  color: #2f2a25;
+  background-color: white;
+  border: 2px solid #f0dfc8;
+  padding: 12px 24px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 800;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.loginButton:hover {
+  border-color: #f28c28;
+  color: #f28c28;
+}
+
+.registerButton {
+  background-color: #f28c28;
+  color: white;
+  padding: 14px 26px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 800;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.registerButton:hover {
+  background-color: #d97616;
+}
+
+
+.profileImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f0dfc8;
+  background-color: white;
+}
+.profileMenuWrapper {
+  position: relative;
+}
+
+.profileButton {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profileButton:hover {
+  transform: translateY(-1px);
+}
+
+.profileDropdown {
+  position: absolute;
+  top: 58px;
+  right: 0;
+  min-width: 160px;
+  background-color: white;
+  border: 1px solid #f0dfc8;
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(47, 42, 37, 0.14);
+  padding: 8px;
+  z-index: 200;
+}
+
+.profileDropdownLink,
+.logoutButton {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  color: #2f2a25;
+  text-decoration: none;
+  padding: 11px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+}
+
+.profileDropdownLink:hover,
+.logoutButton:hover {
+  background-color: #fff3d8;
+  color: #f28c28;
+}
+
+.profileInitials {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f28c28;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 900;
+  border: 2px solid #f0dfc8;
+}
+.cartLink {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #f0dfc8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.cartLink:hover {
+  border-color: #f28c28;
+  transform: translateY(-1px);
+}
+
+.cartIcon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.cartBadge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background-color: #f28c28;
+  color: white;
+  border: 2px solid #fffaf3;
+  font-size: 12px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0 32px;
+  }
+
+  .navLinks {
+    gap: 32px;
+  }
+
+  .logoText {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    padding: 20px;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .logoImage {
+    width: 46px;
+    height: 46px;
+  }
+
+  .navLinks {
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .authActions {
+    gap: 10px;
+  }
+  .cartLink {
+    width: 44px;
+    height: 44px;
+  }
+
+  .cartIcon {
+    font-size: 20px;
+  }
+
+  .loginButton,
+  .registerButton {
+    padding: 10px 18px;
+    font-size: 16px;
+  }
+  .profileButton,
+  .profileImage,
+  .profileInitials {
+    width: 44px;
+    height: 44px;
+  }
+}
