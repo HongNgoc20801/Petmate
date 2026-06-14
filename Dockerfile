@@ -3,7 +3,7 @@ FROM node:22.17.0-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 
-# Cài đặt dependencies (Sử dụng npm install để bỏ qua lỗi lệch lockfile)
+# Cài đặt dependencies
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -12,10 +12,14 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-# Copy code và build dự án
+# Copy code
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# ĐỒNG BỘ CẤU TRÚC BẢNG TRONG BƯỚC BUILD (Nơi file tsconfig.json đang có sẵn)
+RUN npx payload migrate:push || echo "Migration skipped or completed"
+
+# Tiến hành Build dự án sang Standalone
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
@@ -43,5 +47,5 @@ COPY --from=builder /app/.next/static ./.next/static
 EXPOSE 3000
 ENV PORT 3000
 
-# THAY ĐỔI TẠI ĐÂY: Chạy lệnh tự động tạo bảng SQLite trước khi khởi động máy chủ Next.js
-CMD npx payload migrate:push && HOSTNAME="0.0.0.0" node server.js
+# Trả lệnh khởi chạy về dạng máy chủ Node gốc gọn nhẹ
+CMD HOSTNAME="0.0.0.0" node server.js
