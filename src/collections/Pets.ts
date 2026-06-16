@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload";
 
 const isAdmin = (user: any) => {
   if (!user) return false;
+
   if (user.collection === "users") return true;
   if (user.role === "admin") return true;
 
@@ -17,10 +18,13 @@ export const Pets: CollectionConfig = {
   },
 
   access: {
-    create: ({ req: { user } }) => Boolean(user),
+    create: ({ req: { user } }) => {
+      return Boolean(user);
+    },
 
     read: ({ req: { user } }) => {
       if (!user) return false;
+
       if (isAdmin(user)) return true;
 
       return {
@@ -32,6 +36,7 @@ export const Pets: CollectionConfig = {
 
     update: ({ req: { user } }) => {
       if (!user) return false;
+
       if (isAdmin(user)) return true;
 
       return {
@@ -43,6 +48,7 @@ export const Pets: CollectionConfig = {
 
     delete: ({ req: { user } }) => {
       if (!user) return false;
+
       if (isAdmin(user)) return true;
 
       return {
@@ -91,22 +97,9 @@ export const Pets: CollectionConfig = {
     {
       name: "petType",
       label: "Type",
-      type: "select",
+      type: "relationship",
+      relationTo: "pet-types",
       required: true,
-      options: [
-        {
-          label: "Hund",
-          value: "dog",
-        },
-        {
-          label: "Katt",
-          value: "cat",
-        },
-        {
-          label: "Smådyr",
-          value: "smallAnimal",
-        },
-      ],
     },
 
     {

@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import styles from "./PetRegistrationModal.module.css";
 
-type PetType = "dog" | "cat" | "smallAnimal";
+type PetTypeDoc = {
+  id: string | number;
+  name: string;
+};
 
 type PetRegistrationModalProps = {
   ownerId: string;
@@ -11,6 +14,22 @@ type PetRegistrationModalProps = {
   onClose: () => void;
   onPetCreated: (createdPetId: string | number) => void;
 };
+
+function normalizeId(id: string) {
+  const numberId = Number(id);
+
+  if (!Number.isNaN(numberId)) {
+    return numberId;
+  }
+
+  return id;
+}
+
+function formatPetTypeName(name: string) {
+  if (!name) return "Kjæledyr";
+
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
 
 export default function PetRegistrationModal({
   ownerId,
@@ -21,7 +40,10 @@ export default function PetRegistrationModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  const [petType, setPetType] = useState<PetType>("dog");
+  const [petTypes, setPetTypes] = useState<PetTypeDoc[]>([]);
+  const [loadingPetTypes, setLoadingPetTypes] = useState(false);
+
+  const [petType, setPetType] = useState("");
   const [breed, setBreed] = useState("");
   const [name, setName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -31,10 +53,46 @@ export default function PetRegistrationModal({
   const [birthDate, setBirthDate] = useState("");
   const [description, setDescription] = useState("");
 
+  useEffect(() => {
+    if (!open) return;
+
+    async function loadPetTypes() {
+      try {
+        setLoadingPetTypes(true);
+        setError("");
+
+        const response = await fetch("/api/pet-types?limit=100&sort=name", {
+          credentials: "include",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError("Kunne ikke laste dyretyper.");
+          return;
+        }
+
+        const docs: PetTypeDoc[] = data.docs || [];
+
+        setPetTypes(docs);
+
+        if (docs.length > 0) {
+          setPetType(String(docs[0].id));
+        }
+      } catch {
+        setError("Noe gikk galt ved lasting av dyretyper.");
+      } finally {
+        setLoadingPetTypes(false);
+      }
+    }
+
+    loadPetTypes();
+  }, [open]);
+
   if (!open) return null;
 
   function resetForm() {
-    setPetType("dog");
+    setPetType(petTypes.length > 0 ? String(petTypes[0].id) : "");
     setBreed("");
     setName("");
     setImageFile(null);
@@ -83,6 +141,11 @@ export default function PetRegistrationModal({
       return;
     }
 
+    if (!petType) {
+      setError("Du må velge type kjæledyr.");
+      return;
+    }
+
     if (!name.trim()) {
       setError("Navn på kjæledyr er påkrevd.");
       return;
@@ -101,8 +164,8 @@ export default function PetRegistrationModal({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          owner: ownerId,
-          petType,
+          owner: normalizeId(ownerId),
+          petType: normalizeId(petType),
           breed: breed.trim(),
           name: name.trim(),
           image: imageId,
@@ -121,12 +184,12 @@ export default function PetRegistrationModal({
         return;
       }
 
-        const createdPet = data.doc || data;
-        const createdPetId = createdPet.id || createdPet._id;
+      const createdPet = data.doc || data;
+      const createdPetId = createdPet.id || createdPet._id;
 
-        resetForm();
-        onPetCreated(createdPetId);
-        onClose();
+      resetForm();
+      onPetCreated(createdPetId);
+      onClose();
     } catch {
       setError("Noe gikk galt under registrering av kjæledyr.");
     } finally {
@@ -135,22 +198,37 @@ export default function PetRegistrationModal({
   }
 
   function getBreedLabel() {
-    if (petType === "dog") return "Hunderase";
-    if (petType === "cat") return "Katterase";
+    const selectedPetType = petTypes.find(
+      (type) => String(type.id) === petType
+    );
 
-    return "Type smådyr";
+    const petTypeName = selectedPetType?.name.toLowerCase() || "";
+
+    if (petTypeName.includes("hund")) return "Hunderase";
+    if (petTypeName.includes("katt")) return "Katterase";
+
+    return "Rase eller type";
   }
 
   function getBreedPlaceholder() {
-    if (petType === "dog") return "Velg hunderase";
-    if (petType === "cat") return "Velg katterase";
+    const selectedPetType = petTypes.find(
+      (type) => String(type.id) === petType
+    );
+
+    const petTypeName = selectedPetType?.name.toLowerCase() || "";
+
+    if (petTypeName.includes("hund")) return "For eksempel Golden Retriever";
+    if (petTypeName.includes("katt")) return "For eksempel Maine Coon";
 
     return "For eksempel kanin, hamster eller marsvin";
   }
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <section className={styles.modal} onClick={(event) => event.stopPropagation()}>
+      <section
+        className={styles.modal}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.header}>
           <div>
             <p>PetMate konto</p>
@@ -170,30 +248,29 @@ export default function PetRegistrationModal({
         {error && <p className={styles.error}>{error}</p>}
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.choiceGroup}>
-            <button
-              type="button"
-              className={petType === "dog" ? styles.activeChoice : ""}
-              onClick={() => setPetType("dog")}
-            >
-              Hund
-            </button>
+          <div className={styles.field}>
+            <label>Type kjæledyr *</label>
 
-            <button
-              type="button"
-              className={petType === "cat" ? styles.activeChoice : ""}
-              onClick={() => setPetType("cat")}
-            >
-              Katt
-            </button>
-
-            <button
-              type="button"
-              className={petType === "smallAnimal" ? styles.activeChoice : ""}
-              onClick={() => setPetType("smallAnimal")}
-            >
-              Smådyr
-            </button>
+            {loadingPetTypes ? (
+              <p>Laster dyretyper...</p>
+            ) : petTypes.length === 0 ? (
+              <p>Ingen dyretyper funnet. Lag først Hund, Katt osv. i admin.</p>
+            ) : (
+              <div className={styles.choiceGroup}>
+                {petTypes.map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    className={
+                      petType === String(type.id) ? styles.activeChoice : ""
+                    }
+                    onClick={() => setPetType(String(type.id))}
+                  >
+                    {formatPetTypeName(type.name)}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className={styles.field}>
@@ -227,7 +304,9 @@ export default function PetRegistrationModal({
               id="pet-image"
               type="file"
               accept="image/png,image/jpeg,image/jpg,image/webp"
-              onChange={(event) => setImageFile(event.target.files?.[0] || null)}
+              onChange={(event) =>
+                setImageFile(event.target.files?.[0] || null)
+              }
             />
           </div>
 
@@ -269,7 +348,9 @@ export default function PetRegistrationModal({
 
               <button
                 type="button"
-                className={sterilized === "sterilized" ? styles.activeChoice : ""}
+                className={
+                  sterilized === "sterilized" ? styles.activeChoice : ""
+                }
                 onClick={() => setSterilized("sterilized")}
               >
                 Sterilisert
@@ -324,11 +405,19 @@ export default function PetRegistrationModal({
           </div>
 
           <div className={styles.actions}>
-            <button type="button" className={styles.cancelButton} onClick={onClose}>
+            <button
+              type="button"
+              className={styles.cancelButton}
+              onClick={onClose}
+            >
               Avbryt
             </button>
 
-            <button type="submit" className={styles.saveButton} disabled={saving}>
+            <button
+              type="submit"
+              className={styles.saveButton}
+              disabled={saving || loadingPetTypes || petTypes.length === 0}
+            >
               {saving ? "Lagrer..." : "Lagre kjæledyr"}
             </button>
           </div>

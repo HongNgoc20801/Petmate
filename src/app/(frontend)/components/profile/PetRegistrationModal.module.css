@@ -171,7 +171,16 @@
   box-shadow: none;
   cursor: not-allowed;
 }
-
+.field p {
+  margin: 0;
+  color: #5f5750;
+  font-size: 14px;
+  font-weight: 800;
+  background-color: #fffaf3;
+  border: 1px solid #f0dfc8;
+  border-radius: 16px;
+  padding: 13px 15px;
+}
 @media (max-width: 700px) {
   .modal {
     padding: 22px;

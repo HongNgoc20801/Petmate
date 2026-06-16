@@ -469,7 +469,16 @@
   box-shadow: none;
   cursor: not-allowed;
 }
-
+.field > p:not(.groupLabel) {
+  margin: 0;
+  color: #5f5750;
+  font-size: 14px;
+  font-weight: 800;
+  background-color: #fffaf3;
+  border: 1px solid #f0dfc8;
+  border-radius: 16px;
+  padding: 13px 15px;
+}
 /* Responsive */
 
 @media (max-width: 820px) {

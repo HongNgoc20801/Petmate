@@ -10,28 +10,34 @@ const isAdmin = (user: any) => {
 };
 
 export const PetTypes: CollectionConfig = {
-    slug: "pet-types",
+  slug: "pet-types",
 
-    admin: {
-        useAsTitle: "name",
+  admin: {
+    useAsTitle: "name",
+  },
+
+  access: {
+    read: () => true,
+
+    create: ({ req: { user } }) => {
+      return isAdmin(user);
     },
 
-    access: {
-        read: () => true,
-
-        create: ({ req: { user } }) => isAdmin(user),
-
-        update: ({ req: { user } }) => isAdmin(user),
-
-        delete: ({ req: { user } }) => isAdmin(user),
+    update: ({ req: { user } }) => {
+      return isAdmin(user);
     },
 
-    fields: [
-        {
-        name: "name",
-        label: "Type name",
-        type: "text",
-        required: true,
-        },
-    ],
+    delete: ({ req: { user } }) => {
+      return isAdmin(user);
+    },
+  },
+
+  fields: [
+    {
+      name: "name",
+      label: "Type name",
+      type: "text",
+      required: true,
+    },
+  ],
 };

@@ -12,10 +12,20 @@ type MediaImage = {
   alt?: string;
 };
 
+type RelationItem = {
+  id: string | number;
+  name?: string;
+};
+
+type PetTypeDoc = {
+  id: string | number;
+  name: string;
+};
+
 type Pet = {
   id: string | number;
   name: string;
-  petType?: "dog" | "cat" | "smallAnimal";
+  petType?: RelationItem | string | number | null;
   breed?: string;
   image?: MediaImage | string | number | null;
   gender?: "male" | "female";
@@ -25,10 +35,32 @@ type Pet = {
   description?: string;
 };
 
+function normalizeId(id: string) {
+  const numberId = Number(id);
+
+  if (!Number.isNaN(numberId)) {
+    return numberId;
+  }
+
+  return id;
+}
+
+function getRelationId(value: RelationItem | string | number | null | undefined) {
+  if (!value) return "";
+
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
+
+  return String(value.id);
+}
+
 function getPetTypeLabel(petType?: Pet["petType"]) {
-  if (petType === "dog") return "Hund";
-  if (petType === "cat") return "Katt";
-  if (petType === "smallAnimal") return "Smådyr";
+  if (!petType) return "Kjæledyr";
+
+  if (typeof petType === "object") {
+    return petType.name || "Kjæledyr";
+  }
 
   return "Kjæledyr";
 }
@@ -82,14 +114,18 @@ export default function PetDetailPage() {
   const petId = String(params.id || "");
 
   const [pet, setPet] = useState<Pet | null>(null);
+  const [petTypes, setPetTypes] = useState<PetTypeDoc[]>([]);
+
   const [loading, setLoading] = useState(true);
+  const [loadingPetTypes, setLoadingPetTypes] = useState(false);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
   const [editOpen, setEditOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [error, setError] = useState("");
 
-  const [editPetType, setEditPetType] = useState<Pet["petType"]>("dog");
+  const [editPetType, setEditPetType] = useState("");
   const [editBreed, setEditBreed] = useState("");
   const [editName, setEditName] = useState("");
   const [editImageFile, setEditImageFile] = useState<File | null>(null);
@@ -122,16 +158,40 @@ export default function PetDetailPage() {
     }
   }
 
+  async function loadPetTypes() {
+    try {
+      setLoadingPetTypes(true);
+
+      const response = await fetch("/api/pet-types?limit=100&sort=name", {
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setPetTypes([]);
+        return;
+      }
+
+      setPetTypes(data.docs || []);
+    } catch {
+      setPetTypes([]);
+    } finally {
+      setLoadingPetTypes(false);
+    }
+  }
+
   useEffect(() => {
     if (petId) {
       loadPet();
+      loadPetTypes();
     }
   }, [petId]);
 
   function openEditModal() {
     if (!pet) return;
 
-    setEditPetType(pet.petType || "dog");
+    setEditPetType(getRelationId(pet.petType));
     setEditBreed(pet.breed || "");
     setEditName(pet.name || "");
     setEditImageFile(null);
@@ -178,6 +238,11 @@ export default function PetDetailPage() {
 
     if (!pet) return;
 
+    if (!editPetType) {
+      setError("Du må velge type kjæledyr.");
+      return;
+    }
+
     if (!editName.trim()) {
       setError("Navn på kjæledyr er påkrevd.");
       return;
@@ -190,7 +255,7 @@ export default function PetDetailPage() {
       const imageId = await uploadNewPetImage();
 
       const updateData: Record<string, unknown> = {
-        petType: editPetType,
+        petType: normalizeId(editPetType),
         breed: editBreed.trim(),
         name: editName.trim(),
         gender: editGender || undefined,
@@ -220,9 +285,8 @@ export default function PetDetailPage() {
         return;
       }
 
-      const updatedPet = data.doc || data;
+      await loadPet();
 
-      setPet(updatedPet);
       setEditOpen(false);
       setEditImageFile(null);
     } catch {
@@ -411,32 +475,31 @@ export default function PetDetailPage() {
             </div>
 
             <form className={styles.editForm} onSubmit={handleUpdatePet}>
-              <div className={styles.choiceGroup}>
-                <button
-                  type="button"
-                  className={editPetType === "dog" ? styles.activeChoice : ""}
-                  onClick={() => setEditPetType("dog")}
-                >
-                  Hund
-                </button>
+              <div className={styles.field}>
+                <p className={styles.groupLabel}>Type kjæledyr</p>
 
-                <button
-                  type="button"
-                  className={editPetType === "cat" ? styles.activeChoice : ""}
-                  onClick={() => setEditPetType("cat")}
-                >
-                  Katt
-                </button>
-
-                <button
-                  type="button"
-                  className={
-                    editPetType === "smallAnimal" ? styles.activeChoice : ""
-                  }
-                  onClick={() => setEditPetType("smallAnimal")}
-                >
-                  Smådyr
-                </button>
+                {loadingPetTypes ? (
+                  <p>Laster dyretyper...</p>
+                ) : petTypes.length === 0 ? (
+                  <p>Ingen dyretyper funnet. Lag først Hund, Katt osv. i admin.</p>
+                ) : (
+                  <div className={styles.choiceGroup}>
+                    {petTypes.map((type) => (
+                      <button
+                        key={type.id}
+                        type="button"
+                        className={
+                          editPetType === String(type.id)
+                            ? styles.activeChoice
+                            : ""
+                        }
+                        onClick={() => setEditPetType(String(type.id))}
+                      >
+                        {type.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className={styles.field}>
@@ -447,7 +510,7 @@ export default function PetDetailPage() {
                   type="text"
                   value={editBreed}
                   onChange={(event) => setEditBreed(event.target.value)}
-                  placeholder="Velg rase"
+                  placeholder="Skriv rase"
                 />
               </div>
 
@@ -596,7 +659,7 @@ export default function PetDetailPage() {
                 <button
                   type="submit"
                   className={styles.saveButton}
-                  disabled={saving}
+                  disabled={saving || loadingPetTypes || petTypes.length === 0}
                 >
                   {saving ? "Lagrer..." : "Lagre endringer"}
                 </button>

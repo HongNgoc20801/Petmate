@@ -9,20 +9,18 @@ const isAdmin = (user: any) => {
 
   return false;
 };
+
 const getRelationId = (value: unknown): string | number | undefined => {
   if (!value) return undefined;
 
-  // Nếu Payload trả thẳng id dạng string hoặc number
   if (typeof value === "string" || typeof value === "number") {
     return value;
   }
 
-  // Nếu Payload trả array thì lấy phần tử đầu tiên
   if (Array.isArray(value)) {
     return getRelationId(value[0]);
   }
 
-  // Nếu Payload trả object
   if (typeof value === "object") {
     const obj = value as {
       id?: unknown;
@@ -30,22 +28,18 @@ const getRelationId = (value: unknown): string | number | undefined => {
       doc?: unknown;
     };
 
-    // Trường hợp object có id
     if (typeof obj.id === "string" || typeof obj.id === "number") {
       return obj.id;
     }
 
-    // Trường hợp object có value
     if (typeof obj.value === "string" || typeof obj.value === "number") {
       return obj.value;
     }
 
-    // Trường hợp value lại là object
     if (obj.value && typeof obj.value === "object") {
       return getRelationId(obj.value);
     }
 
-    // Trường hợp Payload để document trong doc
     if (obj.doc) {
       return getRelationId(obj.doc);
     }
@@ -57,12 +51,20 @@ const getRelationId = (value: unknown): string | number | undefined => {
 export const Omplassering: CollectionConfig = {
   slug: "omplassering",
 
+  labels: {
+    singular: "Omplassering pet",
+    plural: "Omplassering pets",
+  },
+
   admin: {
     useAsTitle: "name",
+    defaultColumns: ["name", "petType", "breed", "age", "gender", "status"],
   },
 
   access: {
-    read: () => true,
+    read: () => {
+      return true;
+    },
 
     create: ({ req: { user } }) => {
       return isAdmin(user);
@@ -80,98 +82,129 @@ export const Omplassering: CollectionConfig = {
   fields: [
     {
       name: "name",
+      label: "Name",
       type: "text",
       required: true,
     },
 
     {
       name: "petType",
-      label: "Pet Type",
+      label: "Pet type",
       type: "relationship",
       relationTo: "pet-types" as any,
       required: true,
+      admin: {
+        description: "Choose the pet type first, for example Hund or Katt.",
+      },
     },
 
     {
-        name: "breed",
-        label: "Breed",
-        type: "relationship",
-        relationTo: "breeds" as any,
-        required: false,
+      name: "breed",
+      label: "Breed",
+      type: "relationship",
+      relationTo: "breeds" as any,
+      required: false,
+      filterOptions: ({ data, siblingData }) => {
+        const currentData = data as {
+          petType?: unknown;
+        };
 
-        /* filterOptions: ({ data, siblingData }) => {
-            const currentData = data as {
-            petType?: unknown;
-            };
+        const currentSiblingData = siblingData as {
+          petType?: unknown;
+        };
 
-            const currentSiblingData = siblingData as {
-            petType?: unknown;
-            };
+        const petTypeId = getRelationId(
+          currentSiblingData?.petType || currentData?.petType
+        );
 
-            const petTypeId = getRelationId(
-            currentSiblingData?.petType || currentData?.petType
-            );
+        if (!petTypeId) {
+          return false;
+        }
 
-            if (!petTypeId) {
-            return false;
-            }
-
-            return {
-            petType: {
-                equals: petTypeId,
-            },
-            };
-        }, */
+        return {
+          petType: {
+            equals: petTypeId,
+          },
+        };
+      },
+      admin: {
+        description:
+          "Only breeds connected to the selected pet type will be shown.",
+      },
     },
 
     {
       name: "age",
+      label: "Age",
       type: "number",
       required: true,
+      min: 0,
     },
 
     {
       name: "ageUnit",
-      label: "Age Unit",
+      label: "Age unit",
       type: "select",
       required: true,
       defaultValue: "years",
       options: [
-        { label: "Months", value: "months" },
-        { label: "Years", value: "years" },
+        {
+          label: "Months",
+          value: "months",
+        },
+        {
+          label: "Years",
+          value: "years",
+        },
       ],
     },
 
     {
       name: "gender",
+      label: "Gender",
       type: "select",
       required: true,
       options: [
-        { label: "Male", value: "male" },
-        { label: "Female", value: "female" },
+        {
+          label: "Male",
+          value: "male",
+        },
+        {
+          label: "Female",
+          value: "female",
+        },
       ],
     },
 
     {
       name: "personality",
+      label: "Personality",
       type: "text",
       required: false,
     },
 
     {
       name: "description",
+      label: "Description",
       type: "textarea",
       required: false,
     },
 
     {
       name: "status",
+      label: "Status",
       type: "select",
       required: true,
       defaultValue: "available",
       options: [
-        { label: "Available", value: "available" },
-        { label: "Adopted", value: "adopted" },
+        {
+          label: "Available",
+          value: "available",
+        },
+        {
+          label: "Adopted",
+          value: "adopted",
+        },
       ],
     },
 

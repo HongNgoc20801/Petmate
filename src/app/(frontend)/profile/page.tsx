@@ -27,10 +27,15 @@ type CurrentUser = {
   avatar?: MediaImage | string | number | null;
 };
 
+type RelationItem = {
+  id: string | number;
+  name?: string;
+};
+
 type Pet = {
   id: string | number;
   name: string;
-  petType?: "dog" | "cat" | "smallAnimal";
+  petType?: RelationItem | string | number | null;
   breed?: string;
 };
 
@@ -95,6 +100,12 @@ function formatDate(date?: string) {
 }
 
 function getPetTypeLabel(petType?: Pet["petType"]) {
+  if (!petType) return "Kjæledyr";
+
+  if (typeof petType === "object") {
+    return petType.name || "Kjæledyr";
+  }
+
   if (petType === "dog") return "Hund";
   if (petType === "cat") return "Katt";
   if (petType === "smallAnimal") return "Smådyr";
@@ -131,7 +142,7 @@ export default function ProfilePage() {
   async function loadPets(ownerId: string) {
     try {
       const response = await fetch(
-        `/api/pets?where[owner][equals]=${ownerId}&limit=100&sort=-createdAt&depth=1`,
+        `/api/pets?where[owner][equals]=${ownerId}&limit=100&sort=-createdAt&depth=2`,
         {
           credentials: "include",
         }
@@ -505,18 +516,18 @@ export default function ProfilePage() {
         </section>
       </div>
 
-        <PetRegistrationModal
-            ownerId={userId}
-            open={petModalOpen}
-            onClose={() => setPetModalOpen(false)}
-            onPetCreated={(createdPetId) => {
-                if (userId) {
-                loadPets(userId);
-                }
+      <PetRegistrationModal
+        ownerId={userId}
+        open={petModalOpen}
+        onClose={() => setPetModalOpen(false)}
+        onPetCreated={(createdPetId) => {
+          if (userId) {
+            loadPets(userId);
+          }
 
-                router.push(`/profile/pets/${createdPetId}`);
-            }}
-            />
+          router.push(`/profile/pets/${createdPetId}`);
+        }}
+      />
     </main>
   );
 }
