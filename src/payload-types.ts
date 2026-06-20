@@ -246,7 +246,13 @@ export interface Customer {
 export interface Omplassering {
   id: number;
   name: string;
+  /**
+   * Choose the pet type first, for example Hund or Katt.
+   */
   petType: number | PetType;
+  /**
+   * Only breeds connected to the selected pet type will be shown.
+   */
   breed?: (number | null) | Breed;
   age: number;
   ageUnit: 'months' | 'years';
@@ -455,7 +461,7 @@ export interface Pet {
   id: number;
   owner: number | Customer;
   name: string;
-  petType: 'dog' | 'cat' | 'smallAnimal';
+  petType: number | PetType;
   breed?: string | null;
   image?: (number | null) | Media;
   gender?: ('male' | 'female') | null;
